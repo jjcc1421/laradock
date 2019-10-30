@@ -746,8 +746,8 @@ ARG INSTALL_PYTHON=false
 
 RUN if [ ${INSTALL_PYTHON} = true ]; then \
   apt-get -y install python python-pip python-dev build-essential  \
-  && python -m pip install --disable-pip-version-check --user --upgrade pip  \
-  && pip install --upgrade virtualenv \
+  && python -m pip install --upgrade pip  \
+  && python -m pip install --upgrade virtualenv \
 ;fi
 
 ###########################################################################
@@ -770,11 +770,12 @@ USER root
 
 ARG INSTALL_TERRAFORM=false
 
-RUN if [ ${INSTALL_PYTHON} = true ]; then \
-  apt-get -y install python python-pip python-dev build-essential  \
-  && pip install --upgrade pip  \
-  && hash -r pip \
-  && pip install --upgrade virtualenv \
+RUN if [ ${INSTALL_TERRAFORM} = true ]; then \
+    apt-get -y install sudo wget unzip \
+    && wget https://releases.hashicorp.com/terraform/0.10.6/terraform_0.10.6_linux_amd64.zip \
+    && unzip terraform_0.10.6_linux_amd64.zip \
+    && mv terraform /usr/local/bin \
+    && rm terraform_0.10.6_linux_amd64.zip \
 ;fi
 ###########################################################################
 # pgsql client
